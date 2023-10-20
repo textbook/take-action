@@ -13,6 +13,9 @@ inputs:
   node-version-file:
     description: The file containing the Node.js version to install
     default: ''
+  pnpm-version:
+    description: The version of pnpm to install
+    default: ''
   working-directory:
     description: The working directory where package.json is
     default: '.'
@@ -62,6 +65,12 @@ runs:
         cache-dependency-path: ${{ inputs.working-directory }}/${{ steps.package-manager.outputs.file }}
         node-version: ${{ inputs.node-version }}
         node-version-file: ${{ inputs.node-version-file }}
+    - name: Install pnpm
+      if: ${{ steps.package-manager.outputs.name == 'pnpm' }}
+      uses: pnpm/action-setup@v2
+      with:
+        install: false
+        version: ${{ inputs.pnpm-version }}
     - name: Install dependencies
       working-directory: ${{ inputs.working-directory }}
       shell: bash

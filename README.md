@@ -14,6 +14,7 @@
 - `checkout`: Whether to run `actions/checkout` (**default**: `'true'`)
 - `node-version`: Version to pass to [`actions/setup-node`](https://github.com/actions/setup-node#supported-version-syntax) (**default**: `''`)
 - `node-version-file`: Version file to pass to `actions/setup-node` (**default**: `''`)
+- `pnpm-version`: Version to pass to [`pnpm/action-setup`](https://github.com/pnpm/action-setup#version) (**default**: `''`)
 - `working-directory`: Working directory to use for commands (**default**: `'.'`, the root of the repo)
 
 ### Package managers
