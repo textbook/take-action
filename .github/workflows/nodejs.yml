@@ -1,0 +1,26 @@
+---
+name: Test nodejs action
+
+on:
+  push:
+    branches:
+      - nodejs
+  pull_request:
+    branches:
+      - nodejs
+
+jobs:
+  test:
+    strategy:
+      matrix:
+        package-manager: [ 'npm', 'pnpm', 'yarn' ]
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        ref: test/nodejs
+    - uses: textbook/take-action@nodejs
+      with:
+        node-version: lts/*
+        working-directory: ${{ matrix.package-manager }}-example
+    - run: ${{ matrix.package-manager }} test
+      working-directory: ${{ matrix.package-manager }}-example
