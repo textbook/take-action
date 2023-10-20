@@ -62,6 +62,7 @@ runs:
       if: ${{ steps.package-manager.outputs.name == 'pnpm' }}
       uses: pnpm/action-setup@v2
       with:
+        package_json_file: ${{ inputs.working-directory }}/package.json
         run_install: false
         standalone: true
         version: ${{ inputs.pnpm-version }}
