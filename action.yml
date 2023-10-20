@@ -46,7 +46,7 @@ runs:
           echo 'name=npm' >> "$GITHUB_OUTPUT"
         elif [[ -f yarn.lock ]]; then
           echo 'name=yarn' >> "$GITHUB_OUTPUT"
-        elif [[ -f pnpm-lock.yaml ]]
+        elif [[ -f pnpm-lock.yaml ]]; then
           echo 'name=pnpm' >> "$GITHUB_OUTPUT"
         else
           echo 'No valid dependency file found'
