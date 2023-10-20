@@ -21,6 +21,7 @@ jobs:
         ref: test/nodejs
     - uses: textbook/take-action@nodejs
       with:
+        checkout: false
         node-version: lts/*
         working-directory: ${{ matrix.package-manager }}-example
     - run: ${{ matrix.package-manager }} test
