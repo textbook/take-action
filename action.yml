@@ -58,6 +58,13 @@ runs:
           echo 'No valid dependency file found'
           exit 1
         fi
+    - name: Install pnpm
+      if: ${{ steps.package-manager.outputs.name == 'pnpm' }}
+      uses: pnpm/action-setup@v2
+      with:
+        run_install: false
+        standalone: true
+        version: ${{ inputs.pnpm-version }}
     - uses: actions/setup-node@v3
       id: setup-node
       with:
@@ -65,12 +72,6 @@ runs:
         cache-dependency-path: ${{ inputs.working-directory }}/${{ steps.package-manager.outputs.file }}
         node-version: ${{ inputs.node-version }}
         node-version-file: ${{ inputs.node-version-file }}
-    - name: Install pnpm
-      if: ${{ steps.package-manager.outputs.name == 'pnpm' }}
-      uses: pnpm/action-setup@v2
-      with:
-        install: false
-        version: ${{ inputs.pnpm-version }}
     - name: Install dependencies
       working-directory: ${{ inputs.working-directory }}
       shell: bash
