@@ -20,9 +20,11 @@ jobs:
       with:
         ref: test/nodejs
     - uses: textbook/take-action@nodejs
+      id: nodejs-action
       with:
         checkout: false
         node-version: lts/*
         working-directory: ${{ matrix.package-manager }}-example
+    - run: echo '${{ toJSON(steps.nodejs-action.outputs) }}'
     - run: ${{ matrix.package-manager }} test
       working-directory: ${{ matrix.package-manager }}-example
