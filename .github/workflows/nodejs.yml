@@ -12,7 +12,9 @@ jobs:
   test:
     strategy:
       matrix:
+        os: [ 'macos-latest', 'ubuntu-latest', 'windows-latest' ]
         package-manager: [ 'npm', 'pnpm', 'yarn' ]
+    runs-on: ${{ matrix.os }}
     steps:
     - uses: actions/checkout@v4
       with:
