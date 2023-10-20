@@ -1,0 +1,30 @@
+---
+name: Test nodejs action
+
+on:
+  push:
+    branches: [ 'main', 'nodejs', 'test/nodejs' ]
+  pull_request:
+    branches: [ 'main', 'nodejs', 'test/nodejs' ]
+  workflow_dispatch: {}
+
+jobs:
+  test:
+    strategy:
+      matrix:
+        os: [ 'macos-latest', 'ubuntu-latest', 'windows-latest' ]
+        package-manager: [ 'npm', 'pnpm', 'yarn' ]
+    runs-on: ${{ matrix.os }}
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        ref: test/nodejs
+    - uses: textbook/take-action@nodejs
+      id: nodejs-action
+      with:
+        checkout: false
+        node-version: lts/*
+        working-directory: ${{ matrix.package-manager }}-example
+    - run: echo '${{ toJSON(steps.nodejs-action.outputs) }}'
+    - run: ${{ matrix.package-manager }} test
+      working-directory: ${{ matrix.package-manager }}-example
