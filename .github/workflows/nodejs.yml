@@ -3,11 +3,10 @@ name: Test nodejs action
 
 on:
   push:
-    branches:
-      - nodejs
+    branches: [ 'main', 'nodejs' ]
   pull_request:
-    branches:
-      - nodejs
+    branches: [ 'main', 'nodejs' ]
+  workflow_dispatch: {}
 
 jobs:
   test:
