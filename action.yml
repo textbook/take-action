@@ -1,0 +1,81 @@
+---
+name: Set up Node.js
+
+description: Sets up the workflow context for a Node.js JavaScript project.
+
+inputs:
+  checkout:
+    description: Whether to check out the repository
+    default: 'true'
+  node-version:
+    description: The version of Node.js to install
+    default: ''
+  node-version-file:
+    description: The file containing the Node.js version to install
+    default: ''
+  working-directory:
+    description: The working directory where package.json is
+    default: '.'
+
+outputs:
+  cache-hit:
+    description: Whether the dependency cache was a hit
+    value: ${{ steps.setup-node.outputs.cache-hit }}
+  node-version:
+    description: Which version of Node.js was installed
+    value: ${{ steps.setup-node.outputs.node-version }}
+  package-manager:
+    description: Which package manager was detected and used
+    value: ${{ steps.package-manager.outputs.name }}
+
+runs:
+  using: composite
+  steps:
+    - name: Check out repository
+      if: ${{ inputs.checkout == 'true' }}
+      uses: actions/checkout@v4
+    - name: Determine package manager
+      id: package-manager
+      working-directory: ${{ inputs.working-directory }}
+      shell: bash
+      run: |
+        if [[ ! -f package.json ]]; then
+          echo 'No package.json found, not a Node.js project'
+          exit 1
+        elif [[ -f package-lock.json ]]; then
+          echo 'name=npm' >> "$GITHUB_OUTPUT"
+        elif [[ -f yarn.lock ]]; then
+          echo 'name=yarn' >> "$GITHUB_OUTPUT"
+        elif [[ -f pnpm-lock.yaml ]]
+          echo 'name=pnpm' >> "$GITHUB_OUTPUT"
+        else
+          echo 'No valid dependency file found'
+          exit 1
+        fi
+    - uses: actions/setup-node@v3
+      id: setup-node
+      with:
+        cache: ${{ steps.package-manager.outputs.name }}
+        node-version: ${{ inputs.node-version }}
+        node-version-file: ${{ inputs.node-version-file }}
+    - name: Install dependencies
+      working-directory: ${{ inputs.working-directory }}
+      shell: bash
+      env:
+        PACKAGE_MANAGER: ${{ steps.package-manager.outputs.name }}
+      run: |
+        case "$PACKAGE_MANAGER" in
+          npm)
+            echo 'npm ci'
+            ;;
+          yarn)
+            echo 'yarn install --immutable'
+            ;;
+          pnpm)
+            echo 'pnpm install --frozen-lockfile'
+            ;;
+          *)
+            echo "Unknown package manager: $PACKAGE_MANAGER"
+            exit 1
+            ;;
+        esac
