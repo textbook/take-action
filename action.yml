@@ -26,7 +26,7 @@ outputs:
     value: ${{ steps.setup-node.outputs.cache-hit }}
   node-version:
     description: Which version of Node.js was installed
-    value: ${{ steps.setup-node.outputs.node-version }}
+    value: ${{ steps.installed-node-version.outputs.node-version }}
   package-manager:
     description: Which package manager was detected and used
     value: ${{ steps.package-manager.outputs.name }}
@@ -85,6 +85,12 @@ runs:
           # no version specified
           echo "version=''" >> "$GITHUB_OUTPUT"
         fi
+    - name: Output Node.js version without v prefix
+      id: installed-node-version
+      shell: bash
+      env:
+        NODE_VERSION: ${{ steps.setup-node.outputs.node-version }}
+      run: echo "${NODE_VERSION#v}" >> "$GITHUB_OUTPUT"
     - uses: actions/setup-node@v3
       id: setup-node
       with:
