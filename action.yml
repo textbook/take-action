@@ -46,13 +46,13 @@ runs:
           echo 'No package.json found, not a Node.js project'
           exit 1
         elif [[ -f package-lock.json ]]; then
-          echo 'file=package-lock.json' >> "$GITHUB_OUTPUT"
+          echo 'lockfile=package-lock.json' >> "$GITHUB_OUTPUT"
           echo 'name=npm' >> "$GITHUB_OUTPUT"
         elif [[ -f yarn.lock ]]; then
-          echo 'file=yarn.lock' >> "$GITHUB_OUTPUT"
+          echo 'lockfile=yarn.lock' >> "$GITHUB_OUTPUT"
           echo 'name=yarn' >> "$GITHUB_OUTPUT"
         elif [[ -f pnpm-lock.yaml ]]; then
-          echo 'file=pnpm-lock.yaml' >> "$GITHUB_OUTPUT"
+          echo 'lockfile=pnpm-lock.yaml' >> "$GITHUB_OUTPUT"
           echo 'name=pnpm' >> "$GITHUB_OUTPUT"
         else
           echo 'No valid dependency file found'
@@ -70,7 +70,7 @@ runs:
       id: setup-node
       with:
         cache: ${{ steps.package-manager.outputs.name }}
-        cache-dependency-path: ${{ inputs.working-directory }}/${{ steps.package-manager.outputs.file }}
+        cache-dependency-path: ${{ inputs.working-directory }}/${{ steps.package-manager.outputs.lockfile }}
         node-version: ${{ inputs.node-version }}
         node-version-file: ${{ inputs.node-version-file }}
     - name: Install dependencies
