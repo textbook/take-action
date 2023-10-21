@@ -66,12 +66,31 @@ runs:
         run_install: false
         standalone: true
         version: ${{ inputs.pnpm-version }}
+    - name: Determine Node.js version
+      id: node-version
+      working-directory: ${{ inputs.working-directory }}
+      shell: bash
+      env:
+        NODE_VERSION: ${{ inputs.node-version }}
+      run: |
+        PACKAGE_VERSION="$(jq '.engines.node' 'package.json')"
+        VERSION_REGEX='^(\*|(v?[0-9]+(\.(\*|([0-9]+(\.(\*|[0-9]+))?)))?))$'
+        if [[ -n "$NODE_VERSION" ]]; then
+          # Use input version, if supplied
+          echo "version=$NODE_VERSION" >> "$GITHUB_OUTPUT"
+        elif [[ "$PACKAGE_VERSION" =~ "$VERSION_REGEX" ]]; then
+          # Use version from package.json, if valid
+          echo "version=$PACKAGE_VERSION" >> "$GITHUB_OUTPUT"
+        else
+          # no version specified
+          echo "version=''" >> "$GITHUB_OUTPUT"
+        fi
     - uses: actions/setup-node@v3
       id: setup-node
       with:
         cache: ${{ steps.package-manager.outputs.name }}
         cache-dependency-path: ${{ inputs.working-directory }}/${{ steps.package-manager.outputs.lockfile }}
-        node-version: ${{ inputs.node-version }}
+        node-version: ${{ steps.node-version.outputs.version }}
         node-version-file: ${{ inputs.node-version-file }}
     - name: Install dependencies
       working-directory: ${{ inputs.working-directory }}
