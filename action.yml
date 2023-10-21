@@ -83,7 +83,7 @@ runs:
           echo "version=$PACKAGE_VERSION" >> "$GITHUB_OUTPUT"
         else
           # no version specified
-          echo "version=''" >> "$GITHUB_OUTPUT"
+          echo "version=" >> "$GITHUB_OUTPUT"
         fi
     - name: Output Node.js version without v prefix
       id: installed-node-version
