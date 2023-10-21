@@ -100,13 +100,13 @@ runs:
       run: |
         case "$PACKAGE_MANAGER" in
           npm)
-            npm ci
+            npm ci --engine-strict
             ;;
           yarn)
             yarn install --immutable
             ;;
           pnpm)
-            pnpm install --frozen-lockfile
+            pnpm install --engine-strict --frozen-lockfile
             ;;
           *)
             echo "Unknown package manager: $PACKAGE_MANAGER"
