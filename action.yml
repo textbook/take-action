@@ -85,12 +85,6 @@ runs:
           # no version specified
           echo "version=" >> "$GITHUB_OUTPUT"
         fi
-    - name: Output Node.js version without v prefix
-      id: installed-node-version
-      shell: bash
-      env:
-        NODE_VERSION: ${{ steps.setup-node.outputs.node-version }}
-      run: echo "${NODE_VERSION#v}" >> "$GITHUB_OUTPUT"
     - uses: actions/setup-node@v3
       id: setup-node
       with:
@@ -98,6 +92,12 @@ runs:
         cache-dependency-path: ${{ inputs.working-directory }}/${{ steps.package-manager.outputs.lockfile }}
         node-version: ${{ steps.node-version.outputs.version }}
         node-version-file: ${{ inputs.node-version-file }}
+    - name: Output Node.js version without v prefix
+      id: installed-node-version
+      shell: bash
+      env:
+        NODE_VERSION: ${{ steps.setup-node.outputs.node-version }}
+      run: echo "${NODE_VERSION#v}" >> "$GITHUB_OUTPUT"
     - name: Install dependencies
       working-directory: ${{ inputs.working-directory }}
       shell: bash
