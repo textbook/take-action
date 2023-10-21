@@ -97,7 +97,7 @@ runs:
       shell: bash
       env:
         NODE_VERSION: ${{ steps.setup-node.outputs.node-version }}
-      run: echo "${NODE_VERSION#v}" >> "$GITHUB_OUTPUT"
+      run: echo "node-version=${NODE_VERSION#v}" >> "$GITHUB_OUTPUT"
     - name: Install dependencies
       working-directory: ${{ inputs.working-directory }}
       shell: bash
