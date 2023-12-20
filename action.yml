@@ -85,7 +85,7 @@ runs:
           # no version specified
           echo "version=" >> "$GITHUB_OUTPUT"
         fi
-    - uses: actions/setup-node@v3
+    - uses: actions/setup-node@v4
       id: setup-node
       with:
         cache: ${{ steps.package-manager.outputs.name }}
