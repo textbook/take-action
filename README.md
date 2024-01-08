@@ -11,7 +11,7 @@
    - explicitly specified as `node-version`;
    - taken from the `.engines.node` field in `package.json` (if valid for both [npm](https://docs.npmjs.com/cli/v9/configuring-npm/package-json#engines) and [nvm](https://github.com/actions/setup-node#supported-version-syntax)\*); or
    - looked up from an e.g. `.nvmrc` file specified as `node-version-file`.
-5. **Installs dependencies** - ensures relevant lockfile is unchanged and bails if it's inconsistent
+5. **Installs dependencies** _(optional)_ - ensures relevant lockfile is unchanged and bails if it's inconsistent
 6. **Caches dependencies** - uses `actions/setup-node`'s default caching for the appropriate package manager
 
 ## Usage
