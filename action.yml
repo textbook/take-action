@@ -7,6 +7,9 @@ inputs:
   checkout:
     description: Whether to check out the repository
     default: 'true'
+  install:
+    description: Whether to install the dependencies
+    default: 'true'
   node-version:
     description: The version of Node.js to install
     default: ''
@@ -99,6 +102,7 @@ runs:
         NODE_VERSION: ${{ steps.setup-node.outputs.node-version }}
       run: echo "node-version=${NODE_VERSION#v}" >> "$GITHUB_OUTPUT"
     - name: Install dependencies
+      if: ${{ inputs.install == 'true' }}
       working-directory: ${{ inputs.working-directory }}
       shell: bash
       env:

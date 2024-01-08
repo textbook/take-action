@@ -26,6 +26,7 @@
 ### Inputs
 
 - `checkout`: Whether to run `actions/checkout` (**default**: `'true'`)
+- `install`: Whether to run the install step (**default**: `'true'`)
 - `node-version`: Version to pass to [`actions/setup-node`](https://github.com/actions/setup-node#supported-version-syntax) (**default**: `''`)
 - `node-version-file`: Version file to pass to `actions/setup-node` (**default**: `''`)
 - `pnpm-version`: Version to pass to [`pnpm/action-setup`](https://github.com/pnpm/action-setup#version) (**default**: `''`)
