@@ -109,7 +109,7 @@ runs:
             npm ci --engine-strict
             ;;
           yarn)
-            yarn install --immutable
+            yarn install --frozen-lockfile
             ;;
           pnpm)
             pnpm install --engine-strict --frozen-lockfile
