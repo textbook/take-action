@@ -1,0 +1,55 @@
+---
+name: Set up Playwright
+
+description: Sets up the workflow context for Playwright tests.
+
+inputs:
+  working-directory:
+    description: The working directory where package.json is
+    default: '.'
+
+outputs:
+  cache-hit:
+    description: Whether the dependency cache was a hit
+    value: ${{ steps.cache-deps.outputs.cache-hit }}
+  playwright-version:
+    description: Which version of Playwright is installed
+    value: ${{ steps.playwright-info.outputs.version }}
+
+runs:
+  using: composite
+  steps:
+    - name: Get Playwright information
+      id: playwright-info
+      working-directory: ${{ inputs.working-directory }}
+      shell: bash
+      run: |
+        echo "version=$(npx playwright --version | awk '{print $2}')" >> $GITHUB_OUTPUT
+        # https://playwright.dev/docs/browsers#managing-browser-binaries
+        case "$OS" in
+          Linux)
+            echo 'path=~/.cache/ms-playwright' >> $GITHUB_OUTPUT
+            ;;
+          MacOS)
+            echo 'path=~/Library/Caches/ms-playwright' >> $GITHUB_OUTPUT
+            ;;
+          Windows)
+            echo 'path=%USERPROFILE%\AppData\Local\ms-playwright' >> $GITHUB_OUTPUT
+            ;;
+          *)
+            echo "Unknown OS: $OS"
+            exit 1
+          ;;
+        esac
+      env:
+        OS: ${{ runner.os }}
+    - name: Install Playwright dependencies
+      working-directory: ${{ inputs.working-directory }}
+      shell: bash
+      run: npx playwright install --with-deps
+    - name: Cache Playwright dependencies
+      id: cache-deps
+      uses: actions/cache@v4
+      with:
+        key: ${{ runner.os }}-playwright-deps-${{ steps.playwright-info.outputs.version }}
+        path: ${{ steps.playwright-info.outputs.path }}
