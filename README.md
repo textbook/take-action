@@ -20,4 +20,5 @@
 ### Outputs
 
 - `cache-hit`: Whether the cache was hit by `actions/cache`
+- `cache-path`: What path was cached from/restored to
 - `playwright-version`: The version of Playwright detected and used

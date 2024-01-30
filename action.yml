@@ -12,6 +12,9 @@ outputs:
   cache-hit:
     description: Whether the dependency cache was a hit
     value: ${{ steps.cache-deps.outputs.cache-hit }}
+  cache-path:
+    description: The path to the cached dependencies
+    value: ${{ steps.playwright-info.outputs.path }}
   playwright-version:
     description: Which version of Playwright is installed
     value: ${{ steps.playwright-info.outputs.version }}
@@ -34,7 +37,7 @@ runs:
             echo 'path=~/Library/Caches/ms-playwright' >> $GITHUB_OUTPUT
             ;;
           Windows)
-            echo "path=$HOME/AppData/Local/ms-playwright" >> $GITHUB_OUTPUT
+            echo "path=C:\Users\$(whoami)\AppData\Local\ms-playwright" >> $GITHUB_OUTPUT
             ;;
           *)
             echo "Unknown OS: $OS"
