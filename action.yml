@@ -30,7 +30,7 @@ runs:
           Linux)
             echo 'path=~/.cache/ms-playwright' >> $GITHUB_OUTPUT
             ;;
-          MacOS)
+          macOS)
             echo 'path=~/Library/Caches/ms-playwright' >> $GITHUB_OUTPUT
             ;;
           Windows)
