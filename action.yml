@@ -43,13 +43,13 @@ runs:
         esac
       env:
         OS: ${{ runner.os }}
-    - name: Install Playwright dependencies
-      working-directory: ${{ inputs.working-directory }}
-      shell: bash
-      run: npx playwright install --with-deps
     - name: Cache Playwright dependencies
       id: cache-deps
       uses: actions/cache@v4
       with:
         key: ${{ runner.os }}-playwright-deps-${{ steps.playwright-info.outputs.version }}
         path: ${{ steps.playwright-info.outputs.path }}
+    - name: Install Playwright dependencies
+      working-directory: ${{ inputs.working-directory }}
+      shell: bash
+      run: npx playwright install --with-deps
