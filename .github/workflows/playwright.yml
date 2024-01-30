@@ -15,8 +15,12 @@ jobs:
         os: [ 'macos-latest', 'ubuntu-latest', 'windows-latest' ]
     runs-on: ${{ matrix.os }}
     steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: test/playwright
       - uses: textbook/take-action@nodejs
         with:
+          checkout: false
           node-version: lts/*
       - uses: textbook/take-action@playwright
         id: playwright-action
