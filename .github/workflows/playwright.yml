@@ -17,7 +17,6 @@ jobs:
     steps:
     - uses: textbook/take-action@nodejs
       with:
-        checkout: false
         node-version: lts/*
     - uses: textbook/take-action@playwright
       id: playwright-action
