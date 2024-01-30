@@ -34,7 +34,7 @@ runs:
             echo 'path=~/Library/Caches/ms-playwright' >> $GITHUB_OUTPUT
             ;;
           Windows)
-            echo "path=$HOME\AppData\Local\ms-playwright" >> $GITHUB_OUTPUT
+            echo "path=$HOME/AppData/Local/ms-playwright" >> $GITHUB_OUTPUT
             ;;
           *)
             echo "Unknown OS: $OS"
