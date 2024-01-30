@@ -1,0 +1,25 @@
+---
+name: Test playwright action
+
+on:
+  push:
+    branches: [ 'main', 'playwright', 'test/playwright' ]
+  pull_request:
+    branches: [ 'main', 'playwright', 'test/playwright' ]
+  workflow_dispatch: {}
+
+jobs:
+  test:
+    strategy:
+      matrix:
+        os: [ 'macos-latest', 'ubuntu-latest', 'windows-latest' ]
+    runs-on: ${{ matrix.os }}
+    steps:
+    - uses: textbook/take-action@nodejs
+      with:
+        checkout: false
+        node-version: lts/*
+    - uses: textbook/take-action@playwright
+      id: playwright-action
+    - run: echo '${{ toJSON(steps.playwright-action.outputs) }}'
+    - run: npm test
