@@ -66,7 +66,7 @@ runs:
         fi
     - name: Install pnpm
       if: ${{ steps.package-manager.outputs.name == 'pnpm' }}
-      uses: pnpm/action-setup@v2
+      uses: pnpm/action-setup@v4
       with:
         package_json_file: ${{ inputs.working-directory }}/package.json
         run_install: false
