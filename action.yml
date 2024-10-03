@@ -86,13 +86,14 @@ runs:
         fi
         PACKAGE_VERSION="$(jq --raw-output '.engines.node' 'package.json')"
         VERSION_REGEX='^(\*|(v?[0-9]+(\.(\*|([0-9]+(\.(\*|[0-9]+))?)))?))$'
+        echo "::debug::Checking version $PACKAGE_VERSION from package.json"
         if [[ "$PACKAGE_VERSION" =~ "$VERSION_REGEX" ]]; then
           echo "::debug::Using Node version $PACKAGE_VERSION from package.json"
           echo "version=$PACKAGE_VERSION" >> "$GITHUB_OUTPUT"
-        else
-          echo '::debug::No Node version specified'
-          echo "version=" >> "$GITHUB_OUTPUT"
+          exit 0
         fi
+        echo '::debug::No Node version specified'
+        echo "version=" >> "$GITHUB_OUTPUT"
     - uses: actions/setup-node@v4
       id: setup-node
       with:
