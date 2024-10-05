@@ -85,9 +85,8 @@ runs:
           exit 0
         fi
         PACKAGE_VERSION="$(jq --raw-output '.engines.node' 'package.json')"
-        VERSION_REGEX='^(\*|(v?[0-9]+(\.(\*|([0-9]+(\.(\*|[0-9]+))?)))?))$'
         echo "::debug::Checking version $PACKAGE_VERSION from package.json"
-        if [[ "$PACKAGE_VERSION" =~ "$VERSION_REGEX" ]]; then
+        if [[ "$PACKAGE_VERSION" =~ ^(\*|(v?[0-9]+(\.(\*|([0-9]+(\.(\*|[0-9]+))?)))?))$ ]]; then
           echo "::debug::Using Node version $PACKAGE_VERSION from package.json"
           echo "version=$PACKAGE_VERSION" >> "$GITHUB_OUTPUT"
           exit 0
