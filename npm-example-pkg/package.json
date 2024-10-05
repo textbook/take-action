@@ -1,0 +1,14 @@
+{
+  "name": "npm-example-pkg",
+  "version": "0.1.0",
+  "description": "Use Node version from package file",
+  "scripts": {
+    "test": "jest"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0"
+  },
+  "engines": {
+    "node": "22.9.0"
+  }
+}
