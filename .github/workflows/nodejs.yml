@@ -14,6 +14,13 @@ jobs:
       matrix:
         os: [ 'macos-latest', 'ubuntu-latest', 'windows-latest' ]
         package-manager: [ 'npm', 'pnpm', 'yarn' ]
+        example: [ 'example' ]
+        node-version: [ 'lts/*' ]
+        include:
+          - os: 'ubuntu-latest'
+            example: 'example-pkg'
+            package-manager: 'npm'
+            node-version: ''
     runs-on: ${{ matrix.os }}
     steps:
     - uses: actions/checkout@v4
@@ -23,8 +30,9 @@ jobs:
       id: nodejs-action
       with:
         checkout: false
-        node-version: lts/*
-        working-directory: ${{ matrix.package-manager }}-example
+        node-version: ${{ matrix.node-version }}
+        working-directory: ${{ matrix.package-manager }}-${{ matrix.example }}
     - run: echo '${{ toJSON(steps.nodejs-action.outputs) }}'
     - run: ${{ matrix.package-manager }} test
-      working-directory: ${{ matrix.package-manager }}-example
+      working-directory: ${{ matrix.package-manager }}-${{ matrix.example }}
+  
