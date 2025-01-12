@@ -29,9 +29,9 @@ runs:
         case "$RUNNER_OS" in
           Linux)
             if [[ -f '/etc/lsb-release' ]] && [[ "$(cat '/etc/lsb-release' | grep 'DISTRIB_ID' | cut -d= -f2)" == 'Ubuntu' ]]; then
-              echo "os=ubuntu-$(cat '/etc/lsb-release' | grep DISTRIB_RELEASE | cut -d= -f2)" >> $GITHUB_OUTPUT
+              echo "os=ubuntu-$(cat '/etc/lsb-release' | grep 'DISTRIB_RELEASE' | cut -d= -f2)" >> $GITHUB_OUTPUT
             else
-              echo "os=$RUNNER_OS" >> $GITHUB_OUTPUT
+              echo "os=Linux" >> $GITHUB_OUTPUT
             fi
             ;;
           *)
