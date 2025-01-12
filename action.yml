@@ -22,6 +22,22 @@ outputs:
 runs:
   using: composite
   steps:
+    - name: Get OS information
+      id: os-info
+      shell: bash
+      run: |
+        case "$RUNNER_OS" in
+          Linux)
+            if [[ -f '/etc/lsb-release' ]] && [[ "$(cat '/etc/lsb-release' | grep 'DISTRIB_ID' | cut -d= -f2)" == 'Ubuntu' ]]; then
+              echo "os=ubuntu-$(cat '/etc/lsb-release' | grep DISTRIB_RELEASE | cut -d= -f2)" >> $GITHUB_OUTPUT
+            else
+              echo "os=$RUNNER_OS" >> $GITHUB_OUTPUT
+            fi
+            ;;
+          *)
+            echo "os=$RUNNER_OS" >> $GITHUB_OUTPUT
+            ;;
+        esac
     - name: Get Playwright information
       id: playwright-info
       working-directory: ${{ inputs.working-directory }}
@@ -29,7 +45,7 @@ runs:
       run: |
         echo "version=$(npx playwright --version | awk '{print $2}')" >> $GITHUB_OUTPUT
         # https://playwright.dev/docs/browsers#managing-browser-binaries
-        case "$OS" in
+        case "$RUNNER_OS" in
           Linux)
             echo 'path=~/.cache/ms-playwright' >> $GITHUB_OUTPUT
             ;;
@@ -42,15 +58,13 @@ runs:
           *)
             echo "Unknown OS: $OS"
             exit 1
-          ;;
+            ;;
         esac
-      env:
-        OS: ${{ runner.os }}
     - name: Cache Playwright dependencies
       id: cache-deps
       uses: actions/cache@v4
       with:
-        key: ${{ runner.os }}-playwright-deps-${{ steps.playwright-info.outputs.version }}
+        key: ${{ steps.os-info.outputs.os }}-playwright-deps-${{ steps.playwright-info.outputs.version }}
         path: ${{ steps.playwright-info.outputs.path }}
     - name: Install Playwright dependencies
       working-directory: ${{ inputs.working-directory }}
