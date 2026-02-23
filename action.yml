@@ -93,6 +93,13 @@ runs:
         fi
         echo '::debug::No Node version specified'
         echo "version=" >> "$GITHUB_OUTPUT"
+    - name: Install Yarn if required  # not available on -slim vCPU runners
+      if: steps.package-manager.outputs.name == 'yarn'
+      shell: bash
+      run: |
+        if [ -z "$(which yarn)" ]; then
+          npm install --global yarn
+        fi
     - uses: actions/setup-node@v6
       id: setup-node
       with:
