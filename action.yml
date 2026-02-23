@@ -97,7 +97,7 @@ runs:
       if: steps.package-manager.outputs.name == 'yarn'
       shell: bash
       run: |
-        if [ -z "$(which yarn)" ]; then
+        if [[ -z "$(which yarn)" ]]; then
           npm install --global yarn
         fi
     - uses: actions/setup-node@v6
