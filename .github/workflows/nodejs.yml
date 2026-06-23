@@ -23,7 +23,7 @@ jobs:
             node-version: ''
     runs-on: ${{ matrix.os }}
     steps:
-    - uses: actions/checkout@v6
+    - uses: actions/checkout@v7
       with:
         ref: test/nodejs
     - uses: textbook/take-action@nodejs
